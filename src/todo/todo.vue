@@ -13,7 +13,6 @@
              @del="deleteTodo" 接收子组件要触发的del方法
         -->
         <APP_Item :todo="todo"
-                  :old-todo="todo"
                   v-for="todo in filteredTodos"
                   :key="todo.id"
                   @del="deleteTodo"

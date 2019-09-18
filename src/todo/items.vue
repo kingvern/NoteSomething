@@ -1,14 +1,15 @@
 <template>
-    <div :class="['todo-item', todo.completed ? 'completed' : '', todo === cache ? 'editing': '']">
+    <div :class="['todo-item', todo.completed ? 'completed' : '', this.editing ? 'editing': 'finished']">
         <div class="view">
             <input type="checkbox"
                    class="toggle"
                    v-model="todo.completed"
             >
-            <!--<label >{{todo.content}}</label>-->
-            <input v-model="todo.content">
+            <label @click="clickEdit">{{todo.content}}</label>
+
             <button class="destroy" @click="deleteTodo"></button>
         </div>
+        <input class="input" v-model="todo.content"  @blur="clickEdit" >
     </div>
 
 </template>
@@ -27,8 +28,10 @@
                 require: true
             }
         },
-        data:{
-
+        data() {
+            return {
+                editing: false
+            }
         },
         methods: {
             editTodo() {
@@ -37,8 +40,8 @@
                 this.$emit('edit', this.todo)
 
             },
-            editedTodo() {
-
+            clickEdit() {
+                this.editing = !this.editing
             },
             doneEdit() {
 
@@ -82,10 +85,28 @@
                 text-decoration line-through
             }
         }
+        .input {
+            display: none
+        }
 
     }
 
-    input{
+    .editing .input {
+        display: block
+    }
+    .editing label {
+        display: none
+    }
+
+    .finished label{
+        display: block
+    }
+
+    .finished .input{
+         display: none
+    }
+
+    .input {
         white-space: pre-line;
         word-break: break-all;
         padding: 15px 60px 15px 15px;
