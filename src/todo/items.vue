@@ -8,12 +8,7 @@
             <label @dblclick="editTodo(todo)">{{todo.content}}</label>
             <button class="destroy" @click="deleteTodo"></button>
         </div>
-        <input class="edit" type="text"
-               v-model="todo.content"
-               v-todo-focus="todo === editedTodo"
-               @blur="doneEdit(todo)"
-               @keyup.enter="doneEdit(todo)"
-               @keyup.esc="cancelEdit(todo)">
+
     </div>
 
 </template>
