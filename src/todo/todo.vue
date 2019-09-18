@@ -13,9 +13,11 @@
              @del="deleteTodo" 接收子组件要触发的del方法
         -->
         <APP_Item :todo="todo"
+                  :old-todo="todo"
                   v-for="todo in filteredTodos"
                   :key="todo.id"
                   @del="deleteTodo"
+                  @edit="editTodo"
 
         >
         </APP_Item>
@@ -88,6 +90,9 @@
             },
             deleteTodo(id) {
                 this.todos.splice(this.todos.findIndex(todo => todo.id === id), 1)
+            },
+            editTodo(edited) {
+                this.todos.splice(this.todos.findIndex(todo => todo.id === edited), 1, edited)
             },
             toggleFilter(state) {
                 this.filter = state;

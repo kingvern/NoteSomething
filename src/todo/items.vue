@@ -1,14 +1,14 @@
 <template>
-    <div :class="['todo-item', todo.completed ? 'completed' : '', todo === editedTodo ? 'editing': '']">
+    <div :class="['todo-item', todo.completed ? 'completed' : '', todo === cache ? 'editing': '']">
         <div class="view">
             <input type="checkbox"
                    class="toggle"
                    v-model="todo.completed"
             >
-            <label @dblclick="editTodo(todo)">{{todo.content}}</label>
+            <!--<label >{{todo.content}}</label>-->
+            <input v-model="todo.content">
             <button class="destroy" @click="deleteTodo"></button>
         </div>
-
     </div>
 
 </template>
@@ -18,7 +18,7 @@
         // 父子组件间传值
         props: {
             // 接收父组件todo.vue传过来的todo对象
-            editedTodo: {
+            cache: {
                 type: Object,
                 require: true
             },
@@ -27,11 +27,14 @@
                 require: true
             }
         },
+        data:{
+
+        },
         methods: {
             editTodo() {
                 // this.$emit 触发del事件，并返回todo.id
                 // 往父组件传递 del 方法
-                this.$emit('edit', this.todo.id)
+                this.$emit('edit', this.todo)
 
             },
             editedTodo() {
@@ -79,6 +82,20 @@
                 text-decoration line-through
             }
         }
+
+    }
+
+    input{
+        white-space: pre-line;
+        word-break: break-all;
+        padding: 15px 60px 15px 15px;
+        margin-left: 45px;
+        width: 475px;
+        display: block;
+        line-height: 1.2;
+        transition: color 0.4s;
+        font-size: 18px;
+        color: #333;
     }
 
     .toggle {
@@ -122,32 +139,4 @@
         outline none
     }
 
-    .edit {
-        position: relative;
-        margin: 0;
-        width: 100%;
-        font-size: 24px;
-        font-family: inherit;
-        font-weight: inherit;
-        line-height: 1.4em;
-        border: 0;
-        color: inherit;
-        padding: 6px;
-        border: 1px solid #999;
-        box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
-        box-sizing: border-box;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-    .editing .view {
-        display: none;
-    }
-
-    .editing .edit {
-        display: block;
-        width: 506px;
-        padding: 12px 16px;
-        margin: 0 0 0 43px;
-    }
 </style>
