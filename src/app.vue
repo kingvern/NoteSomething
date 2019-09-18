@@ -1,6 +1,7 @@
 <template>
     <!-- app.vue 的template标签内只能有一个节点 -->
     <div id="app">
+        <div id="wallpaper"></div>
         <div id="cover"></div>
         <APP_Header></APP_Header>
         <APP_Todo></APP_Todo>
@@ -39,14 +40,31 @@
     }
 
     #cover {
-        position absolute
+        position fixed
         left 0
         right 0
         top 0
         bottom 0
         background-color #555
-        opacity 0.5
+        opacity 0.2
         z-index -1
+        width 100%
+        height 100%
+    }
+
+    #wallpaper {
+        //filter blur(2px)
+        opacity 0.8
+        background-image url(assets/images/Wallpaper1.jpg)
+        z-index -1
+        left 0
+        top 0
+        width 100%
+        height 100%
+        position fixed
+        background-repeat no-repeat
+        background-size cover
+        background-position 50%
     }
 
 </style>

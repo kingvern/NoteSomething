@@ -1,12 +1,21 @@
 <template>
-    <div :class="['todo-item', todo.completed ? 'completed' : '']">
-        <input type="checkbox"
-               class="toggle"
-               v-model="todo.completed"
-        >
-        <label>{{todo.content}}</label>
-        <button class="destroy" @click="deleteTodo"></button>
+    <div :class="['todo-item', todo.completed ? 'completed' : '', todo === editedTodo ? 'editing': '']">
+        <div class="view">
+            <input type="checkbox"
+                   class="toggle"
+                   v-model="todo.completed"
+            >
+            <label @dblclick="editTodo(todo)">{{todo.content}}</label>
+            <button class="destroy" @click="deleteTodo"></button>
+        </div>
+        <input class="edit" type="text"
+               v-model="todo.content"
+               v-todo-focus="todo === editedTodo"
+               @blur="doneEdit(todo)"
+               @keyup.enter="doneEdit(todo)"
+               @keyup.esc="cancelEdit(todo)">
     </div>
+
 </template>
 
 <script>
@@ -14,12 +23,31 @@
         // 父子组件间传值
         props: {
             // 接收父组件todo.vue传过来的todo对象
+            editedTodo: {
+                type: Object,
+                require: true
+            },
             todo: {
                 type: Object,
                 require: true
             }
         },
         methods: {
+            editTodo() {
+                // this.$emit 触发del事件，并返回todo.id
+                // 往父组件传递 del 方法
+                this.$emit('edit', this.todo.id)
+
+            },
+            editedTodo() {
+
+            },
+            doneEdit() {
+
+            },
+            cancelEdit() {
+
+            },
             deleteTodo() {
                 // this.$emit 触发del事件，并返回todo.id
                 // 往父组件传递 del 方法
@@ -31,17 +59,17 @@
 </script>
 
 <style lang="stylus" scoped>
-    .todo-item{
+    .todo-item {
         position relative
         background-color #fff
-        font-size 24px
-        border-bottom 1px solid rgba(0,0,0,0.06)
-        &:hover{
-            .destroy:after{
+        font-size 18px
+        border-bottom 1px solid rgba(0, 0, 0, 0.06)
+        &:hover {
+            .destroy:after {
                 content: '×'
             }
         }
-        label{
+        label {
             white-space: pre-line;
             word-break: break-all;
             padding: 15px 60px 15px 15px;
@@ -50,14 +78,15 @@
             line-height: 1.2;
             transition: color 0.4s;
         }
-        &.completed{
-            label{
+        &.completed {
+            label {
                 color: #d9d9d9;
                 text-decoration line-through
             }
         }
     }
-    .toggle{
+
+    .toggle {
         text-align: center;
         width: 40px;
         height: 40px;
@@ -71,14 +100,15 @@
         outline none
         padding-left 5px
         cursor pointer
-        &:after{
+        &:after {
             content: url('../assets/images/round.svg')
         }
-        &:checked:after{
+        &:checked:after {
             content: url('../assets/images/done.svg')
         }
     }
-    .destroy{
+
+    .destroy {
         position: absolute;
         top: 0;
         right: 10px;
@@ -86,7 +116,7 @@
         width: 40px;
         height: 40px;
         margin: auto 0;
-        font-size: 30px;
+        font-size: 18px;
         color: #cc9a9a;
         margin-bottom: 11px;
         transition: color 0.2s ease-out;
@@ -95,5 +125,34 @@
         border-width 0
         cursor pointer
         outline none
+    }
+
+    .edit {
+        position: relative;
+        margin: 0;
+        width: 100%;
+        font-size: 24px;
+        font-family: inherit;
+        font-weight: inherit;
+        line-height: 1.4em;
+        border: 0;
+        color: inherit;
+        padding: 6px;
+        border: 1px solid #999;
+        box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .editing .view {
+        display: none;
+    }
+
+    .editing .edit {
+        display: block;
+        width: 506px;
+        padding: 12px 16px;
+        margin: 0 0 0 43px;
     }
 </style>
